@@ -151,7 +151,7 @@ string Board::GetVictoryState(int RecentMove) {
 
 int Board::Minimax(int depth, bool is_maxing_player, string player) {
 	if (GetVictoryState() == player) return 10 - depth;
-	if (GetVictoryState() != "_") return -100;
+	if (GetVictoryState() != "_") return -10 + depth;
 	if (!IsMovesRemaining()) return 0;
 
 	if (!is_maxing_player) {
@@ -206,6 +206,5 @@ Position Board::GetBestMove(string player) {
 		}
 	}
 
-	cout << BestValue << endl;
 	return BestMove;
 }
