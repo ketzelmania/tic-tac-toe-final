@@ -17,6 +17,7 @@ public:
 	Board();
 
 	void SetPosition(int row, int col, string player);
+	string GetPosition(int row, int col);
 	void PrintPosition();
 	void ClearBoard();
 

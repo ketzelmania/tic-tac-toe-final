@@ -20,6 +20,10 @@ void Board::SetPosition(int row, int col, string player) {
 	State[row][col] = player;
 }
 
+string Board::GetPosition(int row, int col) {
+	return State[row][col];
+}
+
 void Board::PrintPosition() {
 	for (int r = 0; r < 3; r++) {
 		for (int c = 0; c < 3; c++) {
@@ -147,10 +151,10 @@ string Board::GetVictoryState(int RecentMove) {
 
 int Board::Minimax(int depth, bool is_maxing_player, string player) {
 	if (GetVictoryState() == player) return 10 - depth;
-	if (GetVictoryState() != "_") return -10 + depth;
+	if (GetVictoryState() != "_") return -100;
 	if (!IsMovesRemaining()) return 0;
 
-	if (is_maxing_player) {
+	if (!is_maxing_player) {
 		int BestValue = -1000;
 		for (int r = 0; r < 3; r++) {
 			for (int c = 0; c < 3; c++) {

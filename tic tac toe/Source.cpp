@@ -28,7 +28,10 @@ int main() {
 	while (PlayAgain == "Y" or PlayAgain == "y") {
 		DisplayTitle();
 		NewBoard.ClearBoard();
-		NewBoard.PrintPosition();
+
+		if (PlayerIcon == "X") {
+			NewBoard.PrintPosition();
+		}
 
 		while (NewBoard.IsMovesRemaining() && (NewBoard.GetVictoryState() == "_")) {
 			if (CurrentTurn == PLAYER) {
@@ -37,13 +40,21 @@ int main() {
 				cin >> PlayerMoveIndex;
 
 				while (PlayerMoveIndex < 1 || PlayerMoveIndex > 9) {
-					cout << "Invalid choice. Pick a number 1-9: " << endl;
+					cout << "Invalid choice. Pick a number 1-9:" << endl;
 					cin >> PlayerMoveIndex;
 				}
 
 				PlayerMoveIndex--;
 
 				Position ConvertedPlayerPosition = NewBoard.ConvertMoveIndexToPosition(PlayerMoveIndex);
+
+				while (NewBoard.GetPosition(ConvertedPlayerPosition.row, ConvertedPlayerPosition.col) != "_") {
+					cout << "Space occupied! Pick an empty space:" << endl;
+					cin >> PlayerMoveIndex;
+
+					ConvertedPlayerPosition = NewBoard.ConvertMoveIndexToPosition(PlayerMoveIndex);
+				}
+
 				NewBoard.SetPosition(ConvertedPlayerPosition.row, ConvertedPlayerPosition.col, PlayerIcon);
 				NewBoard.PrintPosition();
 			}
@@ -52,7 +63,7 @@ int main() {
 				if (PlayerIcon == ComputerIcon) ComputerIcon = "X";
 
 				Position BestMove = NewBoard.GetBestMove(ComputerIcon);
-				cout << "I pick row " << BestMove.row << ", column " << BestMove.col << "!" << endl;
+				cout << "I pick row " << BestMove.row + 1 << ", column " << BestMove.col + 1 << "!" << endl;
 
 				NewBoard.SetPosition(BestMove.row, BestMove.col, ComputerIcon);
 				NewBoard.PrintPosition();
@@ -61,7 +72,17 @@ int main() {
 		}
 
 		cout << "Game Over!" << endl;
-		cout << NewBoard.GetVictoryState() << " Wins!" << endl << endl;
+
+		string Winner = NewBoard.GetVictoryState();
+		if (Winner == "_") {
+			cout << "Draw!" << endl;
+		}
+		else {
+			cout << Winner << " Wins!" << endl;
+		}
+
+		cout << endl;
+
 		cout << "Play again? (Y/N)" << endl;
 		cin >> PlayAgain;
 
@@ -69,7 +90,7 @@ int main() {
 			PlayerIcon = "O";
 		}
 		else {
-			PlayerIcon = "X";
+			PlayerIcon = "X"; 
 		}
 	}
 
